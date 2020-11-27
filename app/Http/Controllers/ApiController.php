@@ -7,9 +7,8 @@ use Illuminate\Http\Request;
 
 class ApiController extends Controller
 {
-    public function getRecords(Request $request) {
-        
-        // dd($request->all());
+    public function getRecords(Request $request) 
+    {
         if ($request->iin) { // if iin was passed
             $iin = $request->iin;
             if (Record::where('iin', $iin)->exists()) {
@@ -24,9 +23,7 @@ class ApiController extends Controller
             $driversNum = $request->driversNum - 1; // - 1 to except record itself, so that only additional drivers left
             
             $records = Record::with('additionalDrivers')->withCount('additionalDrivers')->get(); // count number of drivers for all records
-            // dd('saddsa');
-            if ($records->where('additional_drivers_count', $driversNum)->count() > 0)  { 
-                // dd($records->where('additional_drivers_count', $driversNum)->count() > 0);// check if object is empty
+            if ($records->where('additional_drivers_count', $driversNum)->count() > 0)  { // check if object is empty
                 $filteredRecords = $records->where('additional_drivers_count', $driversNum)->all(); // get records only with given nuber of drivers
                 return response(json_encode($filteredRecords), 200);
             } else {
