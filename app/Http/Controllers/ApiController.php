@@ -24,6 +24,7 @@ class ApiController extends Controller
             
             $records = Record::with('additionalDrivers')->withCount('additionalDrivers')->get(); // count number of drivers for all records
             if ($records->where('additional_drivers_count', $driversNum)->count() > 0)  { // check if object is empty
+                
                 $filteredRecords = $records->where('additional_drivers_count', $driversNum)->all(); // get records only with given nuber of drivers
                 return response(json_encode($filteredRecords), 200);
             } else {
